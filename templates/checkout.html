@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Finalizando Pedido...</title>
+</head>
+<body>
+  <p>Redirecionando para o PagSeguro, aguarde...</p>
+
+  <script>
+    const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    fetch("backend/processa-pagamento.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `carrinho=${encodeURIComponent(JSON.stringify(carrinho))}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.code) {
+        const url = `https://${true ? "sandbox" : "pagseguro"}.pagseguro.uol.com.br/v2/checkout/payment.html?code=${data.code}`;
+        window.location.href = url;
+      } else {
+        alert("Erro ao iniciar pagamento.");
+      }
+    })
+    .catch(err => {
+      alert("Erro na requisição: " + err.message);
+    });
+  </script>
+</body>
+</html>

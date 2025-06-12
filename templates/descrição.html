@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraldaria - Produtos</title>
+  <link rel="stylesheet" href="estilos.css"> <!-- seu CSS -->
+</head>
+<body>
+  <h1 class="titulo">Produtos Disponíveis</h1>
+
+  <div class="produto">
+    <h3>Fralda Huggies Supreme</h3>
+    <p>R$ 59,90</p>
+    <input type="number" id="qtd-huggies" class="input-qtd" value="1" min="1">
+    <button onclick="adicionarAoCarrinho('Fralda Huggies Supreme', 59.90, 'qtd-huggies')" class="btn-adicionar">Adicionar</button>
+  </div>
+
+  <div class="produto">
+    <h3>Fralda Pampers Confort Sec</h3>
+    <p>R$ 69,90</p>
+    <input type="number" id="qtd-pampers" class="input-qtd" value="1" min="1">
+    <button onclick="adicionarAoCarrinho('Fralda Pampers Confort Sec', 69.90, 'qtd-pampers')" class="btn-adicionar">Adicionar</button>
+  </div>
+
+  <a href="carrinho.html" class="btn-carrinho">Ir para o carrinho</a>
+
+  <script>
+    function adicionarAoCarrinho(nome, preco, campoQtdId) {
+      let qtd = parseInt(document.getElementById(campoQtdId).value);
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+      let existente = carrinho.find(item => item.nome === nome);
+      if (existente) {
+        existente.quantidade += qtd;
+      } else {
+        carrinho.push({ nome, preco, quantidade: qtd });
+      }
+
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      alert("Produto adicionado!");
+    }
+  </script>
+</body>
+</html>
